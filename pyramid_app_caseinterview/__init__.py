@@ -16,6 +16,7 @@ from pyramid_app_caseinterview.models import (
     get_session_factory,
     get_tm_session,
 )
+from pyramid_app_caseinterview.utils.custom_json_renderer import CustomJSONRenderer
 
 from .authorization import GlobalRootFactory, GlobalSecurityPolicy
 
@@ -186,6 +187,9 @@ def get_config(settings=None):
     config.include(".routes")
 
     config.scan()
+    # register a custom JSON renderer to handle serialization of non-standard objects
+    custom_json_renderer = CustomJSONRenderer()
+    config.add_renderer("json", custom_json_renderer)
     return config
 
 
