@@ -64,3 +64,21 @@ def session_tm_module_scope(app):
     session = get_tm_session(session_factory, transaction.manager)
     yield session
     session.close()
+
+
+@pytest.fixture(scope="module")
+def seed_time_series_data(session):
+    """Generate and insert random data into the Timeseries table."""
+    from faker import Faker
+    from pyramid_app_caseinterview.models.timeseries import Timeseries
+
+    fake = Faker()
+    records = []
+    for _ in range(100):
+        datetime_value = fake.date_time_this_century()
+        value = fake.random_number(digits=3)
+        records.append(Timeseries(datetime=datetime_value, value=value))
+
+    session.bulk_save_objects(records)
+    session.commit()
+ 
