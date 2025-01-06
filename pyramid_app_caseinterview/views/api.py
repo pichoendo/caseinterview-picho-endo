@@ -36,7 +36,8 @@ class API(View):
         request_method="GET",
     )
     def depthseries_api(self):
-        query = self.session.query(Depthseries)
+        # Using DISTINCT on 'depth' to avoid duplicate entries in the Depthseries query
+        query = self.session.query(Depthseries).distinct(Depthseries.depth)
         return [
             {
                 "id": str(q.id),
