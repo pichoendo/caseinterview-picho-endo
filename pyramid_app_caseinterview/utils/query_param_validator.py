@@ -23,7 +23,7 @@ class QueryParamValidator:
         except ValueError:
             # If parsing fails, add an error message
             self.invalid.append(
-                f"Invalid date format for {param_name}. Please use (YYYY-MM-DD) format."
+                f"Invalid date format for {param_name}. Please use ISO 8601 (YYYY-MM-DD) or (YYYY-MM-DDTHH:MM:SS) format."
             )
 
     def validate(self):
