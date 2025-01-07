@@ -19,12 +19,9 @@ class QueryParamValidator:
         if value:
             try:
                 # Try to convert the value to a float 
-                float(value)
+                self.validated[param_name] = float(value)
             except ValueError:
                 self.invalid.append(f"{param_name} must be a valid number.")
-            else:
-                # If valid, store it as a float in the validated dictionary
-                self.validated[param_name] = float(value)
         else:
             self.validated[param_name] = None
 
