@@ -69,8 +69,8 @@ class API(View):
 
         # Ensure the min_depth is not higher than the max_depth
         if (
-            params["min_depth"]
-            and params["max_depth"]
+            params["min_depth"] is not None
+            and params["max_depth"] is not None
             and params["min_depth"] > params["max_depth"]
         ):
             raise HTTPBadRequest("min_depth cannot be higher than max_depth")
@@ -83,11 +83,11 @@ class API(View):
         )
       
         # Apply the 'min_depth' filter if provided
-        if params["min_depth"]:
+        if params["min_depth"] is not None: 
             query = query.filter(Depthseries.depth >= params["min_depth"])
 
         # Apply the 'max_depth' filter if provided
-        if params["max_depth"]:
+        if params["max_depth"] is not None:
             query = query.filter(Depthseries.depth <= params["max_depth"])
 
         data = [
