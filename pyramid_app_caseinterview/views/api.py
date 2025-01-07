@@ -67,12 +67,6 @@ class API(View):
             self.request, min_depth="float", max_depth="float"
         ).validate()
 
-        # Using DISTINCT on 'depth' to avoid duplicate entries in the Depthseries query and filter null value on 'value' field
-        query = (
-            self.session.query(Depthseries)
-            .distinct(Depthseries.depth)
-            .filter(Depthseries.value.isnot(None))
-        )
         # Ensure the min_depth is not higher than the max_depth
         if (
             params["min_depth"]
@@ -80,7 +74,14 @@ class API(View):
             and params["min_depth"] > params["max_depth"]
         ):
             raise HTTPBadRequest("min_depth cannot be higher than max_depth")
-
+        
+        # Using DISTINCT on 'depth' to avoid duplicate entries in the Depthseries query and filter null value on 'value' field
+        query = (
+            self.session.query(Depthseries)
+            .distinct(Depthseries.depth)
+            .filter(Depthseries.value.isnot(None))
+        )
+      
         # Apply the 'min_depth' filter if provided
         if params["min_depth"]:
             query = query.filter(Depthseries.depth >= params["min_depth"])
